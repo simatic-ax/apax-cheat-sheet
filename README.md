@@ -1,14 +1,25 @@
-# Apax Cheet Sheet
+# Apax Cheat Sheet
 
 ## 01 Apax initial work
 
+### Apax
+|||
+|-|-|
+|`apax self-update`| Update Apax itself.|
+|`apax --version`| returns the version of the installed apax |
+|`apax remove-versions --version=versions`|  A space separated list of versions, to remove. If not provided all versions other then the current one will be removed|
+
+### Login
 |||
 |-|-|
 |`apax login`|interactive login|
 |`apax login --registry REGISTRY-URL [--password ACCESS-TOKEN]` |Login to a custom registry e.g. https://npm.pkg.github.com/|
-|`apax self-update`| Update Apax itself.|
-
 > a login might be required to install dependencies from registries, where a authentication is required
+
+### Licensing
+|||
+|-|-|
+|`apax update-license` | Update local license file for Apax tools.|
 
 ## 02 Setup workspaces
 
@@ -158,7 +169,7 @@ scripts:
     apax test
 ```
 
-## 06 Test
+## 07 Test
 
 ### Commands
 
@@ -171,6 +182,68 @@ scripts:
 |-|-|-|
 |`apax build --coverage`| `-c` | Specifies to get coverage.|
 |`apax build  --ignore-scripts`| | Do not run pretest and posttest scripts.|
+
+
+## 08 Package creation
+
+### Create a package
+
+|command||
+|-|-|
+|`apax pack`| Create a package that can be published. Only files specified in the files section of the apax.yml are included.|
+
+### Options
+|command|short||
+|-|-|-|
+|`apax pack --key=key`| `-k` | The private key to sign the package with, instead of taking it from the default file. Begins with "SECRET".|
+|`apax pack --ignore-scripts`| | Do not run prepack and postpack scripts.|
+
+> `apax pack` signs every package. If no key exists, a new key will be generated.
+
+### Example:
+
+```yml
+name: myproject
+version: 1.0.0
+files:
+  - README.md
+  - src
+```
+Given the files section in the apax.yml. Apax pack creates a package `myproject-1.0.0.apax.tgz` and includes the README.md and the src folder.
+
+### Publish a package
+
+|command||
+|-|-|
+|`apax publish --package=package --registry=registry`| Publish a given package to the specified registry.|
+
+### Signing of packages
+
+|command||
+|-|-|
+|`apax sign --package=package`| Sign an existing package. Note that the pack command also signs packages and is preferred; this one is provided for advanced use cases. |
+|`apax sign --package=package --key=key`| Same as above. But instead of taking it from the default file, you can use another key|
+
+> signed packages protects of manipulated packages. 
+> `apax pack` signs every package. If no key exists, a new key will be generated.
+
+### Generate keys
+
+|command||
+|-|-|
+|`apax keygen`| Creates a key-file, consisting of private and public key, if no key-file exists.|
+|`apax keygen --override-existing`| Override an existing key-file with a new private and public key.|
+
+#### Example of a key pair
+
+```
+created: 2023-08-30T16:30:00.000Z
+publicKey: 1234effe0123abba5678fefe7890abcd1234def4321dcba00001234affebcda1
+privateKey:SECRET9239823897cdfd7d7a1aff4e7e8c8d8a88e88d8765a852b2cc4c7af241618936a6c7e7d58a8b7c7726125c613c3f3e33d3e3a3124ac3c1c1c31fa6a8c7b7a7f2
+```
+
+> WARNING: never publish the private key!
+
 
 
 ## 09 Typical workflows
@@ -199,8 +272,11 @@ scripts:
 
 > please mind that in this case the option `--here` is required for the `apax create`command
 
+### Create a signed package with your own private key
 
-## Scripting with Apax
+//todo
+
+## 10 Scripting with Apax
 
 In the apax.yml you can define a scripting section.
 
@@ -217,6 +293,10 @@ To execute the scripts just enter `apax my-script`. In the given example, `apax 
 ### Build-In-Scripts
 |||
 |-|-|
-| preinstall   | executed before `apax [install | add | remove]`; --ignore-scripts disbables the execution. |
-| postinstall  | executed after `apax [install | add | remove]`; --ignore-scripts disbables the execution. |
+| prebuild     | executed before `apax build` |
+| postbuild    | executed after `apax build` |
+| prepack      | executed before `apax pack` |
+| postpack     | executed after `apax pack` |
+| preinstall   | executed before `apax [install | add | remove | update]`; --ignore-scripts disbables the execution. |
+| postinstall  | executed after `apax [install | add | remove | update]`; --ignore-scripts disbables the execution. |
 | postcreate   | executed after `apax create`with the option `--postcreate`; disabled by default. 
