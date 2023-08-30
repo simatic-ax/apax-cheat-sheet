@@ -26,6 +26,19 @@
   |`apax create --here`|| Create the new project directly in the current directory, instead of using a new directory.|
   |`apax create --no-git`|| Skip the creation and initialization of a git repository.
 
+### Example for `postcreate` script
+
+
+Command: `apax create my-template --registry=https://npm.pkg.github.com/ --postcreate`
+
+This command execute the `postcreate` script, when it is defined in the template `my-template`. In this example, the dependencies will be installed automatically. 
+
+```yml
+scripts:
+  postcreate:
+    apax install -L
+```
+
 ## 03 Install dependencies
 
 |command|short||
@@ -122,6 +135,44 @@ The command `apax update @ax/system-timer` will just update the package `@ax/sys
 |-|-|
 |`apax install --ignore-scripts` | Do not run preinstall and postinstall scripts.|
 
+## 06 Build
+
+### Commands
+
+|command||
+|-|-|
+|`apax build`|  Build the project using the ST compiler. Make sure the @ax/sdk or @ax/st package is installed.|
+
+### Options
+|command|short||
+|-|-|-|
+|`apax build --variables=variables`| `-v` | Add variables during build, corresponding apax.yml variables will be overridden!|
+|`apax build  --ignore-scripts`| | Do not run prebuild and postbuild scripts.|
+
+### Example for a postbuild script
+This `postbuild` script executes the unit tests automatically. when the build was successful.
+
+```yml
+scripts:
+  postbuild:
+    apax test
+```
+
+## 06 Test
+
+### Commands
+
+|command||
+|-|-|
+|`apax test`|  Run AxUnit tests. Make sure the @ax/sdk or @ax/axunit package is installed.|
+
+### Options
+|command|short||
+|-|-|-|
+|`apax build --coverage`| `-c` | Specifies to get coverage.|
+|`apax build  --ignore-scripts`| | Do not run pretest and posttest scripts.|
+
+
 ## 09 Typical workflows
 
 ### Create workspace for a PLC application, library or a TIAX workflow via CLI and open it in AxCode
@@ -147,4 +198,25 @@ The command `apax update @ax/system-timer` will just update the package `@ax/sys
 |5.| `apax create <TEMPLATE> <NAME> --here`| TEMPLATE = [**app, lib, tiax**], NAME = **your workspace name** (e.g. `myWorkspace`) |
 
 > please mind that in this case the option `--here` is required for the `apax create`command
-> 
+
+
+## Scripting with Apax
+
+In the apax.yml you can define a scripting section.
+
+Example:
+```yml
+scripts:
+  my-script:
+    - apax build
+    - apax test
+```
+
+To execute the scripts just enter `apax my-script`. In the given example, `apax build` and `apax test` will executed. 
+
+### Build-In-Scripts
+|||
+|-|-|
+| preinstall   | executed before `apax [install | add | remove]`; --ignore-scripts disbables the execution. |
+| postinstall  | executed after `apax [install | add | remove]`; --ignore-scripts disbables the execution. |
+| postcreate   | executed after `apax create`with the option `--postcreate`; disabled by default. 
