@@ -63,15 +63,15 @@ scripts:
 
 Dependencies will be installed according the semantic versioning
 
-| apax.yml | apax-lock.json | latest version on registry | apax install option | installed version                      |
+| apax.yml | apax-lock.json | available versions on registry | apax install option | installed version                      |
 | -------- | -------------- | -------------------------- | ------------------- | -------------------------------------- |
-| 2.0.1    | -              | 2.1.2                      | -                   | 2.0.1                                  |
-| ^2.0.1   | -              | 2.1.2                      | -                   | 2.1.1                                  |
-| ~2.0.1   | -              | 2.1.2                      | -                   | 2.0.2                                  |
-| ^2.0.1   | 2.0.1          | 2.1.2                      | -                   | 2.0.1                                  |
-| ^2.0.1   | 2.0.1          | 2.1.2                      | --immutable         | 2.0.1                                  |
-| 2.0.2    | 2.0.1          | 2.1.2                      | -                   | 2.0.2                                  |
-| 2.0.2    | 2.0.1          | 2.1.2                      | --immutable         | Error, manifest & lockfile in conflict |
+| 2.0.1    | -              | 2.0.15, 2.5.26, 4.0.0                      | -                   | 2.0.1                                  |
+| ^2.0.1   | -              | 2.0.15, 2.5.26, 4.0.0                      | -                   | 2.5.26                                  |
+| ~2.0.1   | -              | 2.0.15, 2.5.26, 4.0.0                      | -                   | 2.0.15                                  |
+| ^2.0.1   | 2.0.1          | 2.0.15, 2.5.26, 4.0.0                      | -                   | 2.0.1                                  |
+| ^2.0.1   | 2.0.1          | 2.0.15, 2.5.26, 4.0.0                       | --immutable         | 2.0.1                                  |
+| 2.0.15    | 2.0.1          | 2.0.15, 2.5.26, 4.0.0                       | -                   | 2.0.15                                  |
+| 2.0.15    | 2.0.1          | 2.0.15, 2.5.26, 4.0.0                       | --immutable         | Error, manifest & lockfile in conflict |
 
 ### Options
 
