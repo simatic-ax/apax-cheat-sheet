@@ -308,7 +308,7 @@ To execute the scripts just enter `apax my-script`. In the given example, `apax 
 
 ### Build-In-Scripts
 
-|             |                                                                                  |
+|             |                                                                                  ||||
 | ----------- | -------------------------------------------------------------------------------- | --- | ------ | --------------------------------------------------- |
 | prebuild    | executed before `apax build`                                                     |
 | postbuild   | executed after `apax build`                                                      |
