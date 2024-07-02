@@ -1,47 +1,60 @@
 # Apax Cheat Sheet
 
-## 01 Apax initial work
+### Disclaimer
+
+The following information are valid for : **Apax version : 3.2.1**
+
+## [01] General
 
 ### Apax
 
-|                                           |                                                                                                                        |
-| ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| `apax self-update`                        | Update Apax itself.                                                                                                    |
-| `apax --version`                          | returns the version of the installed apax                                                                              |
-| `apax remove-versions --version=versions` | A space separated list of versions, to remove. If not provided all versions other then the current one will be removed |
+| command                                                | short | description                                                                                                             |
+| ------------------------------------------------------ | ----- | ----------------------------------------------------------------------------------------------------------------------- |
+| `apax info     `                                       |       | Returns a bunch of Apax meta-information, just like local and online-available apax versions, protected scopes etc.     |
+| `apax --version`                                       | `-v`  | Returns the version of the installed Apax.                                                                              |
+| `apax self-update <VERSION>`                           |       | Update Apax itself to a specific version. If not provided the latest one will be installed.                             |
+| `apax remove-versions --version=<VERSIONS>`            |       | A space separated list of versions, to remove. If not provided all versions other then the current one will be removed. |
+| `apax config set <SETTING> <VALUE> --registry <URL>`   |       | Set global Apax settings on your system in order to alter the default config, just like "token", "scope", "region".     |
+| `apax config reset <SETTING> <VALUE> --registry <URL>` |       | Reset the edited global Apax settings on your system in order to fall back to the default.                              |
 
 ### Login
 
-|                                                                |                                                             |
-| -------------------------------------------------------------- | ----------------------------------------------------------- |
-| `apax login`                                                   | interactive login                                           |
-| `apax login --registry REGISTRY-URL [--password ACCESS-TOKEN]` | Login to a custom registry e.g. https://npm.pkg.github.com/ |
+| command                                                 | description                                                  |
+| ------------------------------------------------------- | ------------------------------------------------------------ |
+| `apax login`                                            | Interactive login.                                           |
+| `apax login --registry <URL> --password <ACCESS-TOKEN>` | Login to a custom registry e.g. https://npm.pkg.github.com/. |
 
-> a login might be required to install dependencies from registries, where a authentication is required
+> A login might be required to install dependencies from registries, where an authentication is required.
 
 ### Licensing
 
-|                       |                                           |
-| --------------------- | ----------------------------------------- |
-| `apax update-license` | Update local license file for Apax tools. |
+| command               | description                                       |
+| --------------------- | ------------------------------------------------- |
+| `apax update-license` | Update local offline license file for Apax tools. |
 
-## 02 Setup workspaces
+> The license file automatically will be updated when successfully executing `apax install`, `apax update` or `apax add`.
 
-| command                                                    |                                                                          |
-| ---------------------------------------------------------- | ------------------------------------------------------------------------ |
-| `apax create`                                              | create a new project interactively                                       |
-| `apax create TEMPLATE NAME`                                |                                                                          |
-| `apax create TEMPLATE --registry=custom-registry-url NAME` | Create a workspace from a template, which is not on the default registry |
+## [02] Setup workspaces
 
-### Options
+| command                                                         | description                                                                                            |
+| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `apax create`                                                   | Create a new project interactively.                                                                    |
+| `apax create <TEMPLATE-NAME> <WORKSPACE-NAME>`                  | Create a project from a specific template, which is on the default registry. Like : "app" / "lib" etc. |
+| `apax create <TEMPLATE-NAME> --registry <URL> <WORKSPACE-NAME>` | Create a project from a template, which is not on the default registry.                                |
 
-| command                    | short |                                                                                             |
+#### Example for `apax create` command:
+
+Command: `apax create @simatic-ax/ae-json-library --registry https://npm.pkg.github.com mynewprojectname`
+
+#### Options:
+
+| command                    | short | description                                                                                 |
 | -------------------------- | ----- | ------------------------------------------------------------------------------------------- |
 | `apax create --postcreate` | `-p`  | Run an existing `postcreate` script during creation.                                        |
 | `apax create --here`       |       | Create the new project directly in the current directory, instead of using a new directory. |
 | `apax create --no-git`     |       | Skip the creation and initialization of a git repository.                                   |
 
-### Example for `postcreate` script
+#### Example for `postcreate` script:
 
 Command: `apax create my-template --registry=https://npm.pkg.github.com/ --postcreate`
 
@@ -52,89 +65,111 @@ scripts:
   postcreate: apax install
 ```
 
-## 03 Install dependencies
+## [03] Manage dependencies
 
-| command                      | short |                                                                                                                                                                                                                                                                                                                  |
-| ---------------------------- | ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `apax install`               |       | Installs dependencies based on apax.yml manifest and creates a apax-lock.json file. If a lock file exists dependency information will be used for installation except when apax.yml defines a specific version to be used. For details see below                                                                 |
-| `apax install --immutable`   | `-i`  | Performs a clean & reproduceable install by clearing before installing dependencies from scratch. Lockfile will be used as source for dependency metadata. If apax.yml and Lockfile are out of sync (apax.yml defines different version than apax-lock.json) the installation will fail with non-zero exit code. |
-| `apax install  --copy-local` | `-c`  | Copy packages instead of linking to the global cache.                                                                                                                                                                                                                                                            |
-| `apax install  --redownload` | `-r`  | Redownload packages, even if they are already available in the global cache.                                                                                                                                                                                                                                     |
+### Discover dependencies
 
-Dependencies will be installed according the semantic versioning
+| command                                          | short | description                                                         |
+| ------------------------------------------------ | ----- | ------------------------------------------------------------------- |
+| `apax list --package <NAME> --version <VERSION>` |       | List information about a specific version of a package.             |
+| `apax list --keyword`                            |       | List all packages containing a specific keyword in theire apay.yml. |
+
+### Install dependencies
+
+| command                           | short | description                                                                                                                                                                                                                                                                                                                   |
+| --------------------------------- | ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `apax install`                    |       | Installs dependencies based on apax.yml manifest and creates a apax-lock.json file. If a lock file exists dependency information will be used for installation except when apax.yml defines a specific version to be used. For details see below                                                                              |
+| `apax install --immutable`        | `-i`  | Performs a clean & reproduceable install by clearing .apax folder before installing dependencies from scratch. Lockfile will be used as source for dependency metadata. If apax.yml and Lockfile are out of sync (apax.yml defines different version than apax-lock.json) the installation will fail with non-zero exit code. |
+| `apax install --copy-local`       | `-c`  | Copy packages instead of linking to the global cache.                                                                                                                                                                                                                                                                         |
+| `apax install --redownload`       | `-r`  | Redownload packages, even if they are already available in the global cache.                                                                                                                                                                                                                                                  |
+| `apax install --catalog`          |       | Applies the catalog(s) dependencies-filter to the project. Keeps the same versions of dependencies if they fit within the range the catalog allows.                                                                                                                                                                           |
+| `apax install --catalog --strict` |       | Applies the catalog(s) dependencies-filter to the project. Changes the dependencies also mentioned in the catalog to the exact version defined in the catalog.                                                                                                                                                                |
+
+> Dependencies will be installed according to semantic versioning.
 
 | apax.yml | apax-lock.json | available versions on registry | apax install option | installed version                      |
-| -------- | -------------- | -------------------------- | ------------------- | -------------------------------------- |
-| 2.0.1    | -              | 2.0.15, 2.5.26, 4.0.0                      | -                   | 2.0.1                                  |
-| ^2.0.1   | -              | 2.0.15, 2.5.26, 4.0.0                      | -                   | 2.5.26                                  |
-| ~2.0.1   | -              | 2.0.15, 2.5.26, 4.0.0                      | -                   | 2.0.15                                  |
-| ^2.0.1   | 2.0.1          | 2.0.15, 2.5.26, 4.0.0                      | -                   | 2.0.1                                  |
-| ^2.0.1   | 2.0.1          | 2.0.15, 2.5.26, 4.0.0                       | --immutable         | 2.0.1                                  |
-| 2.0.15    | 2.0.1          | 2.0.15, 2.5.26, 4.0.0                       | -                   | 2.0.15                                  |
-| 2.0.15    | 2.0.1          | 2.0.15, 2.5.26, 4.0.0                       | --immutable         | Error, manifest & lockfile in conflict |
+| -------- | -------------- | ------------------------------ | ------------------- | -------------------------------------- |
+|  2.0.1   | -              | 2.0.15, 2.5.26, 4.0.0          | -                   | 2.0.1                                  |
+| ^2.0.1   | -              | 2.0.15, 2.5.26, 4.0.0          | -                   | 2.5.26                                 |
+| ~2.0.1   | -              | 2.0.15, 2.5.26, 4.0.0          | -                   | 2.0.15                                 |
+| ^2.0.1   | 2.0.1          | 2.0.15, 2.5.26, 4.0.0          | -                   | 2.0.1                                  |
+| ^2.0.1   | 2.0.1          | 2.0.15, 2.5.26, 4.0.0          | --immutable         | 2.0.1                                  |
+|  2.0.15  | 2.0.1          | 2.0.15, 2.5.26, 4.0.0          | -                   | 2.0.15                                 |
+|  2.0.15  | 2.0.1          | 2.0.15, 2.5.26, 4.0.0          | --immutable         | Error, manifest & lockfile in conflict |
 
-### Options
+#### Options:
 
-| command                         |                                                |
-| ------------------------------- | ---------------------------------------------- |
-| `apax install --ignore-scripts` | Do not run preinstall and postinstall scripts. |
+| arguments                       | description                                                                                                                                                         |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--ignore-scripts`              | Do not run preinstall and postinstall scripts.                                                                                                                      |
+| `--install-strategy <STRATEGY>` | Define apax install strategy `strict` (default) or `overrideable`. Not mention this argument will always fall back to the default or whats defined in the apax.yml. |
 
-### Examples for `apax install`
+#### Examples for `apax install`:*
 
 ```yml
 devDependencies:
-  "@ax/sdk": X.Y.Z #latest version 4.0.8
+  "@ax/sdk": X.Y.Z #latest major versions 4.1.8 / 3.0.19
 ```
 
-| `@ax/sdk": X.Y.Z`  | installed version |
+| `@ax/sdk":  X.Y.Z` | installed version |
 | ------------------ | ----------------- |
-| `@ax/sdk": 4.0.2`  | 4.0.2             |
-| `@ax/sdk": ^4.0.2` | 4.0.8             |
-| `@ax/sdk": 3.0.2`  | 3.0.2             |
+| `@ax/sdk":  4.0.2` | 4.0.2             |
+| `@ax/sdk": ^4.0.2` | 4.1.8             |
+| `@ax/sdk": ~4.0.2` | 4.0.8             |
+| `@ax/sdk":  3.0.2` | 3.0.2             |
 | `@ax/sdk": ^3.0.2` | 3.0.19            |
+| `@ax/sdk": ~3.0.2` | 3.0.19            |
 
-## 04 Update dependencies
+### Update dependencies
 
-### Commands
+| command                           | short | description                                                              |
+| --------------------------------- | ----- | ------------------------------------------------------------------------ |
+| `apax update`                     |       | Interactive update of all dependencies according to semantic versioning. |
+| `apax update <PACKAGE>`           |       | The `PACKAGE` that should be updated (non-interactive).                  |
+| `apax update --all`               | `-a`  | Update all package (non interactive) according the semantic versioning   |
+| `apax update --catalog`           |       | Interactive update of all catalogs according to semantic versioning.     |
+| `apax update --catalog <CATALOG>` |       | The `CATALOG` that should be updated (non-interactive).                  |
 
-| command                     | short |                                                                           |
-| --------------------------- | ----- | ------------------------------------------------------------------------- |
-| `apax update`               |       | Interactive update of all dependencies according the semantic versioning. |
-| `apax update PACKAGE`       |       | The `PACKAGE` that should be updated (non-interactive)                    |
-| `apax update --all`         | `-a`  | Update all package (non interactive) according the semantic versioning    |
-| `apax update --forceLatest` | `-f`  | Force latest version.                                                     |
+#### Options:
 
-### Options
+| argument        | short | description                                                           |
+| --------------- | ----- | --------------------------------------------------------------------- |
+| `--forceLatest` | `-f`  | Add force latest-version for the update ignoring semantic versioning. |
+| `--prerelease`  | `-p`  | Consider including updating to prereleased versions (unstable).       |
 
-### Example for `apax update`
-
-```yml
-devDependencies:
-  "@ax/sdk": X.Y.Z  // latest version 4.0.8
-```
-
-| `@ax/sdk": X.Y.Z`  | result                                            |
-| ------------------ | ------------------------------------------------- |
-| `@ax/sdk": 4.0.2`  | No updates available                              |
-| `@ax/sdk": ^4.0.2` | @ax/sdk 4.0.2 -> 4.0.8                            |
-| `@ax/sdk": 3.0.2`  | No updates available                              |
-| `@ax/sdk": ^3.0.2` | @ax/sdk 3.0.2 -> 3.0.19 (major version is pinned) |
-
-### Example for `apax update --forceLatest`
+#### Example for `apax update @ax/sdk` (non-interactive mode)
 
 ```yml
 devDependencies:
-  "@ax/sdk": x.y.z  // latest version 4.0.8
+  "@ax/sdk": X.Y.Z #latest major versions: 4.1.8 / 3.0.19
 ```
 
-| entry in apax.yml  | result                 |
-| ------------------ | ---------------------- |
-| `@ax/sdk": 4.0.2`  | @ax/sdk 4.0.2 -> 4.0.8 |
-| `@ax/sdk": ^4.0.2` | @ax/sdk 4.0.2 -> 4.0.8 |
-| `@ax/sdk": 3.0.2`  | @ax/sdk 3.0.2 -> 4.0.8 |
-| `@ax/sdk": ^3.0.2` | @ax/sdk 3.0.2 -> 4.0.8 |
+| entry in apax.yml  | result                    |
+| ------------------ | ------------------------- |
+| `@ax/sdk":  4.0.2` | No update                 |
+| `@ax/sdk": ^4.0.2` | @ax/sdk ^4.0.2 -> ^4.1.8  |
+| `@ax/sdk": ~4.0.2` | @ax/sdk ~4.0.2 -> ~4.0.3  |
+| `@ax/sdk":  3.0.2` | No update                 |
+| `@ax/sdk": ^3.0.2` | @ax/sdk ^3.0.2 -> ^3.0.19 |
+| `@ax/sdk": ~3.0.2` | @ax/sdk ~3.0.2 -> ~3.0.19 |
 
-### Example for `apax update <PACKAGE>`
+#### Example for `apax update @ax/sdk --forceLatest` (non-interactive mode)
+
+```yml
+devDependencies:
+  "@ax/sdk": x.y.z #latest major versions: 4.1.8 / 3.0.19
+```
+
+| entry in apax.yml  | result                   |
+| ------------------ | ------------------------ |
+| `@ax/sdk":  4.0.2` | @ax/sdk  4.0.2 ->  4.1.8 |
+| `@ax/sdk": ^4.0.2` | @ax/sdk ^4.0.2 -> ^4.1.8 |
+| `@ax/sdk": ~4.0.2` | @ax/sdk ~4.0.2 -> ~4.1.8 |
+| `@ax/sdk":  3.0.2` | @ax/sdk  3.0.2 ->  4.1.8 |
+| `@ax/sdk": ^3.0.2` | @ax/sdk ^3.0.2 -> ^4.1.8 |
+| `@ax/sdk": ~3.0.2` | @ax/sdk ~3.0.2 -> ~4.1.8 |
+
+#### Example for `apax update <PACKAGE>`
 
 ```yml
 devDependencies:
@@ -143,40 +178,36 @@ dependencies:
   "@ax/system-timer": 3.0.1 #latest 4.0.1
 ```
 
-The command `apax update @ax/system-timer` will just update the package `@ax/system-timer` from 3.0.1 to version 4.0.1
+The command `apax update @ax/system-timer -f` will just update the package `@ax/system-timer` from 3.0.1 to version 4.0.1
 
-## 05 Add/Remove dependencies
+### Add/Remove dependencies
 
-### Commands
-
-| command                  | short |                                                                     |
+| command                  | short | description                                                         |
 | ------------------------ | ----- | ------------------------------------------------------------------- |
 | `apax add PACKAGE`       |       | The name of the package to add. It calls implicit an `apax install` |
 | `apax add PACKAGE --Dev` | `-D`  | Whether to add the package as a development dependency.             |
 | `apax remove PACKAGE`    |       | The name of the package to remove.                                  |
 
-### Further options
+#### Options
 
-| command                         |                                                |
+| command                         | description                                    |
 | ------------------------------- | ---------------------------------------------- |
 | `apax install --ignore-scripts` | Do not run preinstall and postinstall scripts. |
 
-## 06 Build
+## [04] Build
 
-### Commands
-
-| command      |                                                                                                |
+| command      | description                                                                                    |
 | ------------ | ---------------------------------------------------------------------------------------------- |
 | `apax build` | Build the project using the ST compiler. Make sure the @ax/sdk or @ax/st package is installed. |
 
-### Options
+#### Options
 
-| command                            | short |                                                                                  |
+| command                            | short | description                                                                      |
 | ---------------------------------- | ----- | -------------------------------------------------------------------------------- |
 | `apax build --variables=variables` | `-v`  | Add variables during build, corresponding apax.yml variables will be overridden! |
 | `apax build  --ignore-scripts`     |       | Do not run prebuild and postbuild scripts.                                       |
 
-### Example for a postbuild script
+#### Example for a postbuild script
 
 This `postbuild` script executes the unit tests automatically. when the build was successful.
 
@@ -185,39 +216,37 @@ scripts:
   postbuild: apax test
 ```
 
-## 07 Test
+## [05] Test
 
-### Commands
-
-| command     |                                                                             |
+| command     | description                                                                 |
 | ----------- | --------------------------------------------------------------------------- |
 | `apax test` | Run AxUnit tests. Make sure the @ax/sdk or @ax/axunit package is installed. |
 
-### Options
+#### Options
 
-| command                        | short |                                          |
+| command                        | short | description                              |
 | ------------------------------ | ----- | ---------------------------------------- |
 | `apax build --coverage`        | `-c`  | Specifies to get coverage.               |
 | `apax build  --ignore-scripts` |       | Do not run pretest and posttest scripts. |
 
-## 08 Package creation
+## [04] Publishing and More
 
 ### Create a package
 
-| command     |                                                                                                                 |
+| command     | description                                                                                                     |
 | ----------- | --------------------------------------------------------------------------------------------------------------- |
 | `apax pack` | Create a package that can be published. Only files specified in the files section of the apax.yml are included. |
 
-### Options
+#### Options
 
-| command                      | short |                                                                                                             |
+| command                      | short | description                                                                                                 |
 | ---------------------------- | ----- | ----------------------------------------------------------------------------------------------------------- |
 | `apax pack --key=key`        | `-k`  | The private key to sign the package with, instead of taking it from the default file. Begins with "SECRET". |
 | `apax pack --ignore-scripts` |       | Do not run prepack and postpack scripts.                                                                    |
 
 > `apax pack` signs every package. If no key exists, a new key will be generated.
 
-### Example:
+#### Example:
 
 ```yml
 name: myproject
@@ -231,13 +260,13 @@ Given the files section in the apax.yml. Apax pack creates a package `myproject-
 
 ### Publish a package
 
-| command                                              |                                                    |
+| command                                              | description                                        |
 | ---------------------------------------------------- | -------------------------------------------------- |
 | `apax publish --package=package --registry=registry` | Publish a given package to the specified registry. |
 
 ### Signing of packages
 
-| command                                 |                                                                                                                                         |
+| command                                 | description                                                                                                                             |
 | --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
 | `apax sign --package=package`           | Sign an existing package. Note that the pack command also signs packages and is preferred; this one is provided for advanced use cases. |
 | `apax sign --package=package --key=key` | Same as above. But instead of taking it from the default file, you can use another key                                                  |
@@ -247,7 +276,7 @@ Given the files section in the apax.yml. Apax pack creates a package `myproject-
 
 ### Generate keys
 
-| command                           |                                                                                  |
+| command                           | description                                                                      |
 | --------------------------------- | -------------------------------------------------------------------------------- |
 | `apax keygen`                     | Creates a key-file, consisting of private and public key, if no key-file exists. |
 | `apax keygen --override-existing` | Override an existing key-file with a new private and public key.                 |
@@ -262,7 +291,7 @@ privateKey:SECRET9239823897cdfd7d7a1aff4e7e8c8d8a88e88d8765a852b2cc4c7af24161893
 
 > WARNING: never publish the private key!
 
-## 09 Typical workflows
+## [05] Typical workflows
 
 ### Create workspace for a PLC application, library or a TIAX workflow via CLI and open it in AxCode
 
@@ -291,7 +320,7 @@ privateKey:SECRET9239823897cdfd7d7a1aff4e7e8c8d8a88e88d8765a852b2cc4c7af24161893
 
 //todo
 
-## 10 Scripting with Apax
+## [06] Scripting with Apax
 
 In the apax.yml you can define a scripting section.
 
@@ -308,12 +337,19 @@ To execute the scripts just enter `apax my-script`. In the given example, `apax 
 
 ### Build-In-Scripts
 
-|             |                                                                                  ||||
-| ----------- | -------------------------------------------------------------------------------- | --- | ------ | --------------------------------------------------- |
-| prebuild    | executed before `apax build`                                                     |
-| postbuild   | executed after `apax build`                                                      |
-| prepack     | executed before `apax pack`                                                      |
-| postpack    | executed after `apax pack`                                                       |
-| preinstall  | executed before `apax [install                                                   | add | remove | update]`; --ignore-scripts disbables the execution. |
-| postinstall | executed after `apax [install                                                    | add | remove | update]`; --ignore-scripts disbables the execution. |
-| postcreate  | executed after `apax create`with the option `--postcreate`; disabled by default. |
+| name          | description                                                                                                      |
+| ------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `prebuild`    | executed before `apax build`                                                                                     |
+| `postbuild`   | executed after `apax build`                                                                                      |
+| `prepack`     | executed before `apax pack`                                                                                      |
+| `postpack`    | executed after `apax pack`                                                                                       |
+| `preinstall`  | executed before `apax [install /add / remove / update]`, adding `--ignore-scripts` will disbables the execution. |
+| `postinstall` | executed after `[install /add / remove / update]`, adding `--ignore-scripts` will disbables the execution.       |
+| `postcreate`  | executed after `apax create`with the option `--postcreate`; disabled by default.                                 |
+
+## [10] Contributed Apax Commands
+
+| command               | short | description                                                                                             |
+| --------------------- | ----- | ------------------------------------------------------------------------------------------------------- |
+| `apax --show`         | `-s`  | Lists all available contributed commands from your repository that are comming from installed packages. |
+| `apax <COMMAND_NAME>` |       | Execute contributed commands.                                                                           |
