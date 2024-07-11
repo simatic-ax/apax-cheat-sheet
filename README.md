@@ -1,9 +1,9 @@
 # Apax Cheat Sheet
 
-## Disclaimer
+## Scope
 
-The following information are valid for : **Apax version : 3.2.1**
-Pls. select another github branch-tag (moving forward) in order to switch description for another Apax version you may use instead.
+The following information are valid for : **Apax version : 3.2.X**  
+Pls. select another github tag (moving forward) in order to switch description for another Apax feature-version you may use instead.
 
 ## [01] General
 
@@ -106,6 +106,9 @@ scripts:
 | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `--ignore-scripts`              | Do not run any pre~ and post~ scripts. For example preinstall & postinstall.                                                                                        |
 | `--install-strategy <STRATEGY>` | Define apax install strategy `strict` (default) or `overrideable`. Not mention this argument will always fall back to the default or whats defined in the apax.yml. |
+
+> `strict`: strict adherence to version requirements / errors if versions do not match  
+> `overridable`: more flexible approach to find a compatible version / attempts to satisfy the most requirements, even if not all are strictly met
 
 #### Examples for `apax install`
 
@@ -214,8 +217,6 @@ apax add @ax/system@latest --exact
 | `apax remove <CATALOG>` | The name of the catalog to remove from the project.                                                                                               |
 | `apax clean --globally` | Remove all temporary files from the project. This includes the .apax folder and contents from the .bin folder which correlate with your apax.yml. |
 
-> Be aware : Adding the option `--globally` argument to the clean command will delete the actual package cache on "C:\Users\xxxxx\.apax\packages" in addition and not only the Symlink.
-
 ## [04] Build
 
 | command      | description                                                                                    |
@@ -259,8 +260,6 @@ scripts:
 | ----------- | --------------------------------------------------------------------------------------------------------------- |
 | `apax pack` | Create a package that can be published. Only files specified in the files section of the apax.yml are included. |
 
-> You can pack any kind of apax project/ repository. E.g. Library-, Application-, Workspace-, Catalog-, Template- or Generic-type.
-
 #### Options
 
 | `pack` arguments         | description                                                                                                    |
@@ -269,7 +268,7 @@ scripts:
 | `--keyVersion <VERSION>` | Optional add a version "v{number}" , default: "v1" .                                                           |
 | `--ignore-scripts`       | Do not run any pre~ and post~ scripts. For example prepack & postpack.                                         |
 
-> `apax pack` signs every package with `apax keygen`. If no `<KEY>` provided, a new key with v1 will be automatically generated in the process.
+> `apax pack` automatically calls `apax keygen` once, if no `<KEY>` was provided. A new key with v1 will be generated in the process.
 
 #### Example `apax.yml` snippet
 
