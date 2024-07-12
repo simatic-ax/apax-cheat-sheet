@@ -252,7 +252,7 @@ scripts:
 | `--coverage`       | `-c`  | Specifies to get coverage.                                             |
 | `--ignore-scripts` |       | Do not run any pre~ and post~ scripts. For example pretest & posttest. |
 
-## [04] Publishing and More
+## [06] Publishing and More
 
 ### Create a package
 
@@ -325,7 +325,7 @@ If you no longer wish to maintain a package, or if you would like to encourage u
 
 > Optional you can add `--undeprecate` in order to revert the deprecation.
 
-## [06] Typical workflows
+## [07] Typical workflows
 
 ### Create workspace for a PLC application, library or a TIAX workflow via CLI and open it in AxCode
 
@@ -350,7 +350,7 @@ If you no longer wish to maintain a package, or if you would like to encourage u
 
 > please mind that in this case the option `--here` is required for the `apax create`command
 
-## [07] Scripting with Apax
+## [08] Scripting with Apax
 
 In the apax.yml you can define a scripting section.
 
@@ -379,7 +379,7 @@ To execute the scripts just enter `apax my-script`. In the given example, `apax 
 
 > Adding `--ignore-scripts` to the corresponding apax commands will disable the execution of these Build-In-Scripts if they are defined.
 
-## [08] Contributed Apax Commands
+## [09] Contributed Apax Commands
 
 | command               | short | description                                                                                             |
 | --------------------- | ----- | ------------------------------------------------------------------------------------------------------- |
