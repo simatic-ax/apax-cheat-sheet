@@ -325,7 +325,7 @@ If you no longer wish to maintain a package, or if you would like to encourage u
 
 > Optional you can add `--undeprecate` in order to revert the deprecation.
 
-## [05] Typical workflows
+## [06] Typical workflows
 
 ### Create workspace for a PLC application, library or a TIAX workflow via CLI and open it in AxCode
 
@@ -350,7 +350,7 @@ If you no longer wish to maintain a package, or if you would like to encourage u
 
 > please mind that in this case the option `--here` is required for the `apax create`command
 
-## [06] Scripting with Apax
+## [07] Scripting with Apax
 
 In the apax.yml you can define a scripting section.
 
@@ -379,7 +379,7 @@ To execute the scripts just enter `apax my-script`. In the given example, `apax 
 
 > Adding `--ignore-scripts` to the corresponding apax commands will disable the execution of these Build-In-Scripts if they are defined.
 
-## [07] Contributed Apax Commands
+## [08] Contributed Apax Commands
 
 | command               | short | description                                                                                             |
 | --------------------- | ----- | ------------------------------------------------------------------------------------------------------- |
