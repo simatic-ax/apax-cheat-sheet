@@ -2,7 +2,7 @@
 
 ## Scope
 
-The following information are valid for : **Apax version : 3.2.X**  
+The following information are valid for : **Apax version : 4.2.X**  
 Pls. select another github tag (moving forward) in order to switch description for another Apax feature-version you may use instead.
 
 ## [01] General
@@ -114,17 +114,17 @@ scripts:
 
 ```yml
 devDependencies:
-  "@ax/sdk": X.Y.Z #latest major versions 4.1.8 / 3.0.19
+  "@ax/sdk": X.Y.Z #latest major versions 2510.3.0 / 2504.2.3
 ```
 
-| `@ax/sdk":  X.Y.Z` | installed version |
-| ------------------ | ----------------- |
-| `@ax/sdk":  4.0.2` | 4.0.2             |
-| `@ax/sdk": ^4.0.2` | 4.1.8             |
-| `@ax/sdk": ~4.0.2` | 4.0.8             |
-| `@ax/sdk":  3.0.2` | 3.0.2             |
-| `@ax/sdk": ^3.0.2` | 3.0.19            |
-| `@ax/sdk": ~3.0.2` | 3.0.19            |
+| `@ax/sdk":  X.Y.Z`    | installed version |
+| --------------------- | ----------------- |
+| `@ax/sdk":  2504.1.1` | 2504.1.1          |
+| `@ax/sdk": ^2504.1.1` | 2504.2.3          |
+| `@ax/sdk": ~2504.1.1` | 2504.1.2          |
+| `@ax/sdk":  2510.2.0` | 2510.2.0          |
+| `@ax/sdk": ^2510.2.0` | 2510.3.0          |
+| `@ax/sdk": ~2510.2.0` | 2510.2.0          |
 
 ### Update dependencies
 
@@ -147,44 +147,44 @@ devDependencies:
 
 ```yml
 devDependencies:
-  "@ax/sdk": X.Y.Z #latest major versions: 4.1.8 / 3.0.19
+  "@ax/sdk": X.Y.Z #latest major versions: 2510.3.0 / 2504.2.3
 ```
 
-| entry in apax.yml  | result                    |
-| ------------------ | ------------------------- |
-| `@ax/sdk":  4.0.2` | No update                 |
-| `@ax/sdk": ^4.0.2` | @ax/sdk ^4.0.2 -> ^4.1.8  |
-| `@ax/sdk": ~4.0.2` | @ax/sdk ~4.0.2 -> ~4.0.3  |
-| `@ax/sdk":  3.0.2` | No update                 |
-| `@ax/sdk": ^3.0.2` | @ax/sdk ^3.0.2 -> ^3.0.19 |
-| `@ax/sdk": ~3.0.2` | @ax/sdk ~3.0.2 -> ~3.0.19 |
+| entry in apax.yml     | result                                     |
+| --------------------- | ------------------------------------------ |
+| `@ax/sdk":  2504.1.1` | No update                                  |
+| `@ax/sdk": ^2504.1.1` | @ax/sdk ^2504.1.1 -> ^2504.2.3             |
+| `@ax/sdk": ~2504.1.1` | @ax/sdk ~2504.1.1 -> ~2504.1.2             |
+| `@ax/sdk":  2510.2.0` | No update                                  |
+| `@ax/sdk": ^2510.2.0` | @ax/sdk ^2510.2.0 -> ^2510.3.0             |
+| `@ax/sdk": ~2510.2.0` | @ax/sdk ~2510.2.0 -> ~2510.2.0 / No Update |
 
 #### Example for `apax update @ax/sdk --forceLatest` (non-interactive mode)
 
 ```yml
 devDependencies:
-  "@ax/sdk": x.y.z #latest major versions: 4.1.8 / 3.0.19
+  "@ax/sdk": x.y.z #latest major versions: 2510.3.0 / 2504.2.3
 ```
 
-| entry in apax.yml  | result                   |
-| ------------------ | ------------------------ |
-| `@ax/sdk":  4.0.2` | @ax/sdk 4.0.2 -> 4.1.8   |
-| `@ax/sdk": ^4.0.2` | @ax/sdk ^4.0.2 -> ^4.1.8 |
-| `@ax/sdk": ~4.0.2` | @ax/sdk ~4.0.2 -> ~4.1.8 |
-| `@ax/sdk":  3.0.2` | @ax/sdk 3.0.2 -> 4.1.8   |
-| `@ax/sdk": ^3.0.2` | @ax/sdk ^3.0.2 -> ^4.1.8 |
-| `@ax/sdk": ~3.0.2` | @ax/sdk ~3.0.2 -> ~4.1.8 |
+| entry in apax.yml     | result                         |
+| --------------------- | ------------------------------ |
+| `@ax/sdk":  2504.1.1` | @ax/sdk 2504.1.1 -> 2510.3.0   |
+| `@ax/sdk": ^2504.1.1` | @ax/sdk ^2504.1.1 -> ^2510.3.0 |
+| `@ax/sdk": ~2504.1.1` | @ax/sdk ~2504.1.1 -> ~2510.3.0 |
+| `@ax/sdk":  2510.2.0` | @ax/sdk 2510.2.0 -> 2510.3.0   |
+| `@ax/sdk": ^2510.2.0` | @ax/sdk ^2510.2.0 -> ^2510.3.0 |
+| `@ax/sdk": ~2510.2.0` | @ax/sdk ~2510.2.0 -> ~2510.3.0 |
 
 #### Example for `apax update <PACKAGE>`
 
 ```yml
 devDependencies:
-  "@ax/sdk": 4.0.2 #latest version 4.0.8
+  "@ax/sdk": 2504.1.1 #latest version 2510.3.0
 dependencies:
-  "@ax/system-timer": 3.0.1 #latest 4.0.1
+  "@ax/system-timer": 10.0.24 #latest 10.2.7
 ```
 
-The command `apax update @ax/system-timer -f` will just update the package `@ax/system-timer` from 3.0.1 to version 4.0.1
+The command `apax update @ax/system-timer -f` will just update the package `@ax/system-timer` from 10.0.24 to version 10.2.7
 
 ### Add dependencies
 
